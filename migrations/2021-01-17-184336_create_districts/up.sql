@@ -1,0 +1,13 @@
+-- Your SQL goes here
+
+CREATE TABLE districts
+(
+    id BIGSERIAL PRIMARY KEY,
+    slug TEXT NOT NULL,
+    display_name TEXT NOT NULL,
+    unvaccinated BIGINT NOT NULL DEFAULT 0,
+    vaccinated BIGINT NOT NULL DEFAULT 0,
+    interested BIGINT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+)

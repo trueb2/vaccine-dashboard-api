@@ -22,6 +22,7 @@ mod schema;
 
 mod health;
 mod users;
+mod districts;
 
 macro_rules! AppFactory {
     () => {
@@ -52,6 +53,7 @@ macro_rules! AppFactory {
                       .max_age(3600))
                 .configure(users::init_routes)
                 .configure(health::init_routes)
+                .configure(districts::init_routes)
         }
     };
 }
