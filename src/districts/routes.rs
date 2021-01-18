@@ -37,8 +37,8 @@ async fn get_all(district_query: web::Query<DistrictQuery>) -> Result<HttpRespon
 #[derive(Debug, Deserialize)]
 struct IncrementQuery {
     id: i64,
-    vaccinated: Option<bool>,
     unvaccinated: Option<bool>,
+    vaccinated: Option<bool>,
     interested: Option<bool>,
 }
 
@@ -48,8 +48,8 @@ async fn increment(increment_query: web::Query<IncrementQuery>) -> Result<HttpRe
     log::trace!("Incrementing stats with {:?}", query);
     let district = District::increment(
         query.id,
-        query.vaccinated.unwrap_or_default(),
         query.unvaccinated.unwrap_or_default(),
+        query.vaccinated.unwrap_or_default(),
         query.interested.unwrap_or_default())?;
     Ok(HttpResponse::Ok().json(district))
 }

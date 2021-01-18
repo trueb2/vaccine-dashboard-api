@@ -36,12 +36,12 @@ struct Summary {
 }
 
 impl District {
-    pub fn increment(id: i64, vaccinated: bool, unvaccinated: bool, interested: bool) -> Result<Self, CustomError> {
+    pub fn increment(id: i64, unvaccinated: bool, vaccinated: bool, interested: bool) -> Result<Self, CustomError> {
         let conn = db::connection()?;
         let query = diesel::update(districts::table)
             .filter(districts::id.eq(id));
 
-        match (unvaccinated, vaccinated, interested) {
+        match (vaccinated, unvaccinated, interested) {
             (false, false, false) => {
                 return Ok(districts::table.filter(districts::id.eq(id)).first(&conn)?);
             },
@@ -51,6 +51,7 @@ impl District {
                 )).get_result(&conn)?);
             },
             (false, true, false) => {
+                log::info!("Incrementing unvaccinated ...");
                 return Ok(query.set((
                     districts::unvaccinated.eq(districts::unvaccinated + 1),
                 )).get_result(&conn)?);
@@ -68,6 +69,7 @@ impl District {
                 )).get_result(&conn)?);
             },
             (true, false, false) => {
+                log::info!("Incrementing vaccinated ...");
                 return Ok(query.set((
                     districts::vaccinated.eq(districts::vaccinated + 1),
                 )).get_result(&conn)?);
